@@ -5,6 +5,18 @@ echo This is an echo message.
 
 echo
 echo "##################################################################################"
+echo Strings demo
+echo "##################################################################################"
+echo
+
+echo Concatenating strings:
+a='Hello'
+b='world'
+d="${a}, ${b}!"
+echo ${d}
+
+echo
+echo "##################################################################################"
 echo Directory actions demo
 echo "##################################################################################"
 echo
@@ -98,6 +110,55 @@ grep -Po '"name": .*?[^\\]"' ./required/$JSON_FILE | awk -F':' '{print $2}'
 echo
 echo "grep -Po '\"name\": .*[^,]' ./required/\$JSON_FILE | awk -F':' '{print \$2}'"
 grep -Po '"name": .*[^,]' ./required/$JSON_FILE | awk -F':' '{print $2}'
+
+echo
+echo "grep -Po '\"surname\": .*[^,]' ./required/\$JSON_FILE | awk -F':' '{print \$2}'"
+grep -Po '"surname": .*[^,]' ./required/$JSON_FILE | awk -F':' '{print $2}'
+
+echo
+echo Without quotes:
+# gsub is used to remove quotes
+echo "grep -Po '\"surname\": .*[^,]' ./required/\$JSON_FILE | awk -F':' '{print \$2}'"
+grep -Po '"surname": .*[^,]' ./required/$JSON_FILE | awk -F':' '{gsub(/"/, "", $2);print $2}'
+
+echo
+echo Without quotes and space at the beginning:
+# ': ' is used as separator instead of ':'
+echo "grep -Po '\"surname\": .*[^,]' ./required/\$JSON_FILE | awk -F': ' '{print \$2}'"
+grep -Po '"surname": .*[^,]' ./required/$JSON_FILE | awk -F': ' '{gsub(/"/, "", $2);print $2}'
+
+echo
+echo "##################################################################################"
+echo Array demo
+echo "##################################################################################"
+echo
+
+# Create an array from awk output
+names=($(grep -Po '"name": .*[^,]' ./required/$JSON_FILE | awk -F': ' '{gsub(/"/, "", $2);print $2}'))
+echo names array:
+echo ${names[0]} ${names[1]} ${names[2]}
+
+# Loop through every element in the array
+echo names array \(loop\):
+for i in "${names[@]}"
+do
+   :
+  echo $i
+done
+
+echo Printing array index and value:
+for i in "${!names[@]}"; do
+  printf "%s\t%s\n" "$i" "${names[$i]}"
+done
+
+surnames=($(grep -Po '"surname": .*[^,]' ./required/$JSON_FILE | awk -F': ' '{gsub(/"/, "", $2);print $2}'))
+
+echo Iterating over two arrays of same size:
+for i in "${!names[@]}"; do
+  printf "%s %s\n" "${names[$i]}" "${surnames[$i]}"
+  full_name="${names[$i]} ${surnames[$i]}"
+  echo ${full_name}
+done
 
 echo
 echo "##################################################################################"

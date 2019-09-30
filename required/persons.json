@@ -1,15 +1,18 @@
 [
     {
         "age": 30,
-        "name": "Anna"
+        "name": "Anna",
+        "surname": "Lennox"
     },
     {
         "age": 31,
         "name": "Beatrice",
+        "surname": "Jonhson",
         "county": "Leicestershire"
     },
     {
         "age": 32,
-        "name": "Cynthia"
+        "name": "Cynthia",
+        "surname": "Bulbridge"
     }
 ]
