@@ -17,6 +17,99 @@ echo ${d}
 
 echo
 echo "##################################################################################"
+echo cmp demo
+echo "##################################################################################"
+echo
+
+echo cmp compares two files byte by byte
+echo cmp --print-bytes required/diff/dir1/unique_file_in_dir1 required/diff/dir2/unique_file_in_dir2
+cmp --print-bytes required/diff/dir1/unique_file_in_dir1 required/diff/dir2/unique_file_in_dir2
+
+# exit 0
+
+echo
+echo "##################################################################################"
+echo diff demo
+echo "##################################################################################"
+echo
+
+echo Symbolic links in dir1 and dir2 point to different files. They were created as:
+echo required/diff/dir1$ ln -s ../dir3/dir31/file311 symlink_file
+echo required/diff/dir2$ ln -s ../dir3/dir31/file312 symlink_file
+
+echo
+echo diff -r required/diff/dir1 required/diff/dir2 \(symbolic link targets are NOT compared by default\)
+diff -r required/diff/dir1 required/diff/dir2
+
+echo
+echo diff -r --no-dereference required/diff/dir1 required/diff/dir2 \(--no-dereference options makes diff compare symbolic link targets\)
+diff -r --no-dereference required/diff/dir1 required/diff/dir2
+
+echo
+echo diff -r -b --no-dereference required/diff/dir1 required/diff/dir2 \(--no-dereference options makes diff compare symbolic link targets\)
+diff -r -b --no-dereference required/diff/dir1 required/diff/dir2
+
+echo
+echo Files in dir4 and dir5 have same name but different content.
+echo diff -r required/diff/dir4 required/diff/dir5
+diff -r required/diff/dir4 required/diff/dir5
+
+echo
+echo Files in dir6 and dir7 have same name and content. diff -r for these directories gives an empty output.
+echo diff -r required/diff/dir6 required/diff/dir7
+diff -r required/diff/dir6 required/diff/dir7
+
+if [[ $(diff -r required/diff/dir6 required/diff/dir7) ]]; then
+    echo "Directories are different."
+else
+    echo "Directories are identical."
+fi
+
+# exit 0
+
+echo
+echo "##################################################################################"
+echo File actions demo
+echo "##################################################################################"
+echo
+
+echo test -f \(or [-f ...]\) checks whether file exists and is regular file
+echo test -L \(or [-L ...]\) checks whether file exists and is symbolic link
+echo test -f required/persons.json
+
+regular_file=required/persons.json
+symlink_file=required/diff/dir1/symlink_file
+
+if test -f "$regular_file"; then
+   echo "$regular_file" exists and is regular file.
+else
+   echo "$regular_file" does not exist or is not a regular file.
+fi
+
+if test -L "$regular_file"; then
+   echo "$regular_file" exists and is symlink file.
+else
+   echo "$regular_file" does not exist or is not a symlink file.
+fi
+
+
+if test -f "$symlink_file"; then
+   echo "$symlink_file" exists and is regular file.
+else
+   echo "$symlink_file" does not exist or is not a regular file.
+fi
+
+
+if test -L "$symlink_file"; then
+   echo "$symlink_file" exists and is symlink file.
+else
+   echo "$symlink_file" does not exist or is not a symlink file.
+fi
+
+# exit 0
+
+echo
+echo "##################################################################################"
 echo Directory actions demo
 echo "##################################################################################"
 echo
@@ -82,7 +175,6 @@ cp -r $DIR_DEMO_SOURCE_DIR/* $DIR_DEMO_DEST_DIR
 
 # Use --preserve=links -r to copy directories recursively and to preserve symlinks
 # cp --preserve=links -r $DIR_DEMO_SOURCE_DIR/* $DIR_DEMO_DEST_DIR
-
 
 echo
 echo "##################################################################################"
@@ -228,3 +320,23 @@ ls -lt $SYMLINK_DIR_LINKS
 # --preserve[=ATTR_LIST] = preserve the specified attributes (default:mode,ownership,timestamps), if possible additional attributes: context, links, xattr, all
 # -r (-R, --recursive) = copy directories recursively
 cp --preserve=links -r $SYMLINK_DIR_LINKS $SYMLINK_DIR_LINKS_COPY
+
+echo
+echo "##################################################################################"
+echo Comparing numbers demo
+echo "##################################################################################"
+echo
+
+number0=0
+
+if [ $number0 == 0 ]; then
+   echo "number0 is zero"
+else
+   echo "number0 is not zero"
+fi
+
+if [ $number0 -eq 0 ]; then
+   echo "number0 is zero"
+else
+   echo "number0 is not zero"
+fi
