@@ -252,6 +252,16 @@ for i in "${!names[@]}"; do
   echo ${full_name}
 done
 
+# Find all files with specific extension and in specified directory and put their names in array.
+# ./required/ - sets working directory for find command
+# -printf '%f\n' - prints only file name (including extension)
+names2=($(find ./required/ -type f -path '*dummy_files*/*' -name '*.abc' -printf '%f\n'))
+echo Printing names2 array index and value:
+for i in "${!names2[@]}"; do
+  printf "%s\t%s\n" "$i" "${names2[$i]}"
+done
+
+
 echo
 echo "##################################################################################"
 echo rsync demo
