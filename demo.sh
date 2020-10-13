@@ -350,3 +350,24 @@ if [ $number0 -eq 0 ]; then
 else
    echo "number0 is not zero"
 fi
+
+# include other bash script
+source ./modules/file_io.sh
+
+# declare a variable to prevent creating XML file
+# DISABLE_XML_TO_FILE=dummy_value
+
+# Assigning a value to a variable.
+# NOTE: don't insert a space before and after '=' character
+xml_file_name=temp.xml
+
+# call a function defined in another bash file included with 'source'
+# and pass a variable to it.
+demo_writing_xml_into_file $xml_file_name
+
+if file_exists $xml_file_name; then
+   echo "$xml_file_name exists"
+else
+   echo "$xml_file_name does not exist"
+fi
+
