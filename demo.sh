@@ -9,11 +9,9 @@ echo Strings demo
 echo "##################################################################################"
 echo
 
-echo Concatenating strings:
-a='Hello'
-b='world'
-d="${a}, ${b}!"
-echo ${d}
+source ./modules/strings_demo.sh
+string_demo
+exit
 
 echo
 echo "##################################################################################"
@@ -308,7 +306,6 @@ mkdir $SYMLINK_DIR_ORIG/mydir
 touch $SYMLINK_DIR_ORIG/mydir/dummy_file
 touch $SYMLINK_DIR_ORIG/myfile
 
-echo pwd = $(pwd)
 # Create symlinks
 # ln = creates links which can be hard and symbolic
 # -s (--symbolic) = creates symbolic link
@@ -351,8 +348,10 @@ else
    echo "number0 is not zero"
 fi
 
-# include other bash script
+# include other bash scripts
 source ./modules/file_io.sh
+source ./modules/strings_demo.sh
+source ./modules/filesystem_demo.sh
 
 # declare a variable to prevent creating XML file
 # DISABLE_XML_TO_FILE=dummy_value
@@ -370,4 +369,7 @@ if file_exists $xml_file_name; then
 else
    echo "$xml_file_name does not exist"
 fi
+
+working_dir_demo
+substring_removal_demo
 

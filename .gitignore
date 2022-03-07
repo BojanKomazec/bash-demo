@@ -1,0 +1,5 @@
+dir_demo/
+rsync/
+symlink/
+test_dir/
+temp.xml
