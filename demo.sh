@@ -9,6 +9,16 @@ echo Strings demo
 echo "##################################################################################"
 echo
 
+source ./modules/test_demo.sh
+test_demo
+exit
+
+echo
+echo "##################################################################################"
+echo Strings demo
+echo "##################################################################################"
+echo
+
 source ./modules/strings_demo.sh
 string_demo
 exit
