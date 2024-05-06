@@ -3,15 +3,14 @@
 # Print message
 echo This is an echo message.
 
-echo
-echo "##################################################################################"
-echo Strings demo
-echo "##################################################################################"
-echo
-
 source ./modules/strings_demo.sh
-string_demo
+source ./modules/functions_demo.sh
+
+# string_demo
+functions_demo
 exit
+
+
 
 echo
 echo "##################################################################################"

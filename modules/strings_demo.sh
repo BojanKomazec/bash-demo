@@ -35,6 +35,7 @@ function string_concatenation_demo() {
     echo ${d}
 
     # (!) Argument supstitution does not happen if string is under single quotes!
+    # Shell variables will not get expanded within single quotes.
     message='Hello $1'
     echo $message
     # ouput: Hello $1
