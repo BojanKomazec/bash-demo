@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # To see all options for Bash' test command, run:
 # $ man test
 #

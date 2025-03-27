@@ -50,8 +50,8 @@ file_io_demo() {
     demo_writing_xml_into_file $xml_file_name
 
     if file_exists $xml_file_name; then
-    echo "$xml_file_name exists"
+        echo "$xml_file_name exists"
     else
-    echo "$xml_file_name does not exist"
+        echo "$xml_file_name does not exist"
     fi
 }
