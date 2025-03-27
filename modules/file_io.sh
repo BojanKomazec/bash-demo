@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+
 # Function which writes XML text into a given file.
 # Arguments:
 #       $1: file
-function demo_writing_xml_into_file() {
+demo_writing_xml_into_file() {
     # $0 is the name of the calling file e.g. ./demo.sh
     echo echo "demo_writing_xml_into_file(): \$0 is $0"
     echo echo "demo_writing_xml_into_file(): \$1 is $1"
@@ -33,4 +35,23 @@ function demo_writing_xml_into_file() {
 #       $1: file
 function file_exists() {
     [ -f $1 ]
+}
+
+file_io_demo() {
+    # declare a variable to prevent creating XML file
+    # DISABLE_XML_TO_FILE=dummy_value
+
+    # Assigning a value to a variable.
+    # NOTE: don't insert a space before and after '=' character
+    xml_file_name=temp.xml
+
+    # call a function defined in another bash file included with 'source'
+    # and pass a variable to it.
+    demo_writing_xml_into_file $xml_file_name
+
+    if file_exists $xml_file_name; then
+    echo "$xml_file_name exists"
+    else
+    echo "$xml_file_name does not exist"
+    fi
 }

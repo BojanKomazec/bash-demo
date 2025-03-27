@@ -46,6 +46,41 @@ function string_length() {
     fi 
 }
 
+demo() {
+    echo test -f \(or [-f ...]\) checks whether file exists and is regular file
+    echo test -L \(or [-L ...]\) checks whether file exists and is symbolic link
+    echo test -f required/persons.json
+
+    regular_file=required/persons.json
+    symlink_file=required/diff/dir1/symlink_file
+
+    if test -f "$regular_file"; then
+    echo "$regular_file" exists and is regular file.
+    else
+    echo "$regular_file" does not exist or is not a regular file.
+    fi
+
+    if test -L "$regular_file"; then
+    echo "$regular_file" exists and is symlink file.
+    else
+    echo "$regular_file" does not exist or is not a symlink file.
+    fi
+
+
+    if test -f "$symlink_file"; then
+    echo "$symlink_file" exists and is regular file.
+    else
+    echo "$symlink_file" does not exist or is not a regular file.
+    fi
+
+
+    if test -L "$symlink_file"; then
+    echo "$symlink_file" exists and is symlink file.
+    else
+    echo "$symlink_file" does not exist or is not a symlink file.
+    fi
+}
+
 function test_demo() {
     string_length 'Bojan'
 }

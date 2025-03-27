@@ -1,4 +1,6 @@
-function substring_removal_demo() {
+#!/usr/bin/env bash
+
+substring_removal_demo() {
     echo
     echo 'substring_removal_demo()'
     echo
@@ -17,7 +19,7 @@ function substring_removal_demo() {
 
 # Arguments:
 # $1 = name
-function string_concatenation_demo() {
+string_concatenation_demo() {
     echo 'string_concatenation_demo()'
 
     echo $#
@@ -44,6 +46,6 @@ function string_concatenation_demo() {
     # output: Hello Bojan
 }
 
-function string_demo() {
+string_demo() {
     string_concatenation_demo 'Bojan'
 }
