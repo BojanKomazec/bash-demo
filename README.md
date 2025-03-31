@@ -15,6 +15,30 @@ Use `#!/usr/bin/env bash` shebang instead of `#!/bin/bash`. This way is more por
 
 To return a value from funcion, simply assign that value to a dedicated global variable (within a function), call the function without using command substitution (`$()`) (which calls the subshell) and read the value of that global variable into the variable in the calling function. This way you'll avoid going down the rabbit hole of preventing buffering of subshell which adds complexity for a very little gain.
 
+# Debugging Bash scripts
+
+Start your bash script with `bash -x ./script.sh` or add in your script `set -x` to see debug output.
+
+To localize debugging:
+```
+set -x
+
+...
+code to debug
+...
+
+set +x
+```
+
+# Controlling script exit conditions
+
+In shell scripting, commands return an exit code (a number) to indicate success or failure. A zero exit code typically means success, while a non-zero code indicates an error.
+
+`set -e` (or `set -o errexit`) in shell scripting causes the entire script to exit immediately if any command, including those within functions, returns a non-zero exit code (indicating an error).
+
+When a function in a shell script executes a command that returns a non-zero exit code (`false` or e.g. `return 1`), and `set -e` is enabled, the script will immediately exit, regardless of where the function is called from or what other commands are in the script.
+
+
 # Bash Tips and Tricks
 
 ## Bash built-in commands
@@ -93,7 +117,7 @@ wait
 
 ### echo
 
-Using echo to write the _message_ in a function which also needs to return _data_ comes with buffering traps if everything is redirected to stdout. Messages migth not come in the desired/expected order and the output value might not contain only desired data but also parts of messages. We can return value from a function in multiple ways (via global variable or via file) but the most clean solution comes from the idea that stdin should be used ONLY for data and stderr should be used for any communication with terminal user (prompts, messaging). Messages echo'ed to stderr get flushed immediately so their order is preserved and this also leaves stdin in a clean state, used for communicating pure data between functions. By default, Bash itself writes `read -p` prompts to stderr (https://unix.stackexchange.com/questions/380012/why-does-bash-interactive-shell-by-default-write-its-prompt-and-echoes-its-inter). 
+Using echo to write the _message_ in a function which also needs to return _data_ comes with buffering traps if everything is redirected to stdout. Messages migth not come in the desired/expected order and the output value might not contain only desired data but also parts of messages. We can return value from a function in multiple ways (via global variable or via file) but the most clean solution comes from the idea that stdin should be used ONLY for data and stderr should be used for any communication with terminal user (prompts, messaging). Messages echo'ed to stderr get flushed immediately so their order is preserved and this also leaves stdin in a clean state, used for communicating pure data between functions. By default, Bash itself writes `read -p` prompts to stderr (https://unix.stackexchange.com/questions/380012/why-does-bash-interactive-shell-by-default-write-its-prompt-and-echoes-its-inter).
 
 From https://stackoverflow.com/questions/79359311/bash-function-call-leads-to-incorrect-reversed-text-output-order#comment139947978_79359398:
 
