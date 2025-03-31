@@ -10,6 +10,7 @@
 # include other bash scripts
 source ./modules/bash_builtin_commands/echo.sh
 source ./modules/data_structures.sh
+source ./modules/conditional_statements.sh
 source ./modules/file_io.sh
 source ./modules/operators_demo.sh
 source ./modules/strings_demo.sh
@@ -20,6 +21,9 @@ source ./modules/unix_tools/file_comparison.sh
 source ./modules/unix_tools/test_demo.sh
 source ./modules/unix_tools/text_processing.sh
 source ./modules/util/log.sh
+source ./modules/util/prompt.sh
+source ./modules/util/prompt_test.sh
+source ./modules/util/log_test.sh
 
 
 print_usage() {
@@ -60,13 +64,17 @@ main() {
 #         exit 1
 #     fi
 
-    
     log_start "Running the demo script"
     # log_info "Environment: $ENV"
     # log_info "Branch: $BRANCH"
     log_info "Verbose: $VERBOSE"
 
-    echo_demo
+    # echo_demo
+    # test_confirmation_prompt
+    # string_checks_demo
+    test_prompt_user_for_value_without_default_value
+    test_prompt_user_for_value_with_default_value
+    # log_test
     # test_demo
     # string_demo
     # cmp_demo

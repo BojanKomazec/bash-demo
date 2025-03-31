@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+string_types_demo() {
+    local null_string=''
+    local non_null_string="Hello, World!"
+    local empty_string=""
+    local non_empty_string="Hello, World!"
+    local string_with_spaces="   "
+    local string_with_tabs="		"
+    local string_with_newline="Hello,\nWorld!"
+    local string_with_special_chars="Hello, @#$%^&*()!"
+    local string_with_escaped_chars="Hello, \"World\"!"
+    local string_with_variable="Hello, $USER!"
+    local string_with_variable_and_escape="Hello, \"$USER\"!"
+    local string_with_variable_and_escape_quoted="Hello, \"$USER\"!"
+}
+
 substring_removal_demo() {
     echo
     echo 'substring_removal_demo()'

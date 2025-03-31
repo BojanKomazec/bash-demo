@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# printf is more portable than echo. 
+# printf by default interprets escape sequences, while echo does not (echo needs to be called with -e for that).
+# printf by default does not add a newline at the end, while echo does.
+
 #
 # Logging functions
 #
@@ -14,40 +18,40 @@
 log_trace() {
     if [[ "$VERBOSE" == true ]]; then
         # two spaces before the message are required as the emoji takes up two characters
-        echo "🔍  $1" >&2;
+        printf "%b\n" "🔍 $1" >&2;
     fi
 }
 
 log_debug() {
     if [[ "$VERBOSE" == true ]]; then
         # two spaces before the message are required as the emoji takes up two characters
-        echo "🐛  $1" >&2;
+        printf "%b\n" "🐛 $1" >&2;
     fi
 }
 
 log_info() {
     if [[ "$VERBOSE" == true ]]; then
         # two spaces before the message are required as the emoji takes up two characters
-        echo "ℹ️  $1" >&2;
+        printf "%b\n" "ℹ️  $1" >&2;
     fi
 }
 
 log_error() {
-    echo "❌ $1" >&2;
+    printf "%b\n" "❌ $1" >&2;
 }
 
 log_error_and_exit() {
-    echo "❌ $1" >&2; exit 1;
+    printf "%b\n" "❌ $1" >&2; exit 1;
 }
 
 log_warning() {
     # two spaces before the message are required as the emoji takes up two characters
-    echo "⚠️  $1" >&2;
+    printf "%b\n" "⚠️  $1" >&2;
 }
 
 log_fatal() {
     # two spaces before the message are required as the emoji takes up two characters
-    echo "💀  $1" >&2;
+    printf "%b\n" "💀 $1" >&2;
 }
 
 #
@@ -55,21 +59,21 @@ log_fatal() {
 #
 
 log_success() {
-    echo "✅ $1" >&2;
+    printf "%b\n" "✅ $1" >&2;
 }
 
 log_wait() {
-    echo "⏳ $1" >&2;
+    printf "%b\n" "⏳ $1" >&2;
 }
 
 log_start() {
-    echo "🚀 $1" >&2;
+    printf "%b\n" "🚀 $1" >&2;
 }
 
 log_skip() {
-    echo "⏩ $1" >&2;
+    printf "%b\n" "⏩ $1" >&2;
 }
 
 log_finish() {
-    echo "🏁 $1" >&2;
+    printf "%b\n" "🏁 $1" >&2;
 }
