@@ -53,6 +53,7 @@ log_fatal() {
 #
 # Custom log functions
 #
+
 log_success() {
     echo "✅ $1" >&2;
 }
