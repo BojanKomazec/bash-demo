@@ -9,9 +9,12 @@
 
 # include other bash scripts
 source ./modules/bash_builtin_commands/echo.sh
+source ./modules/bash_builtin_commands/mapfile.sh
+source ./modules/bash_builtin_commands/read.sh
 source ./modules/data_structures.sh
 source ./modules/conditional_statements.sh
 source ./modules/file_io.sh
+source ./modules/functions_demo.sh
 source ./modules/operators_demo.sh
 source ./modules/strings_demo.sh
 source ./modules/filesystem_demo.sh
@@ -31,6 +34,37 @@ print_usage() {
 }
 
 main() {
+    echo "Bash version: $BASH_VERSION"
+
+    #  by default, bash doesn't always enable special key processing depending on how the script is being run
+    # Up = ^[[A
+    # Down = ^[[B
+    # Right = ^[[C
+    # Left = ^[[D
+
+    # # Enable arrow key support
+    # bind '"\e[A": history-search-backward'
+    # bind '"\e[B": history-search-forward'
+    # bind '"\e[C": forward-char'
+    # bind '"\e[D": backward-char'
+
+    # # Save terminal settings
+    # old_settings=$(stty -g)
+
+    # # Function to restore terminal settings
+    # cleanup() {
+    #     stty "$old_settings"
+    #     echo -e "\nExiting..."
+    #     exit 0
+    # }
+
+    # # Set trap to restore terminal on exit
+    # trap cleanup INT TERM EXIT
+
+    # # Prepare terminal for raw input
+    # stty raw -echo
+
+
     VERBOSE=false
     # ENV=""
     # BRANCH=""
@@ -64,30 +98,34 @@ main() {
 #         exit 1
 #     fi
 
+    # double quotes are required for variable expansion
+
     log_start "Running the demo script"
     # log_info "Environment: $ENV"
     # log_info "Branch: $BRANCH"
     log_info "Verbose: $VERBOSE"
 
-    # echo_demo
-    # test_confirmation_prompt
-    # string_checks_demo
-    test_prompt_user_for_value_without_default_value
-    test_prompt_user_for_value_with_default_value
-    # log_test
-    # test_demo
-    # string_demo
+
     # cmp_demo
+    # data_structures_demo
+    # dirname_demo
+    # echo_demo
     # file_and_dir_management_tools_demo
-    # json_parsing_with_grep
-    # array_demo
-    # array_demo2
-    # ln_demo
-    # operators_demo
-    # working_dir_demo
-    # substring_removal_demo
     # file_io_demo
+    # functions_demo
+    # json_parsing_with_grep
+    # log_test
+    # ln_demo
+    # mapfile_demo
+    # operators_demo
+    # string_checks_demo
+    # string_demo
+    # substring_removal_demo
     # shell_built_in_commands_demo
+    # test_demo
+    prompt_demo
+    read_demo
+    # working_dir_demo
 
     log_finish "Finished running the demo script"
 }

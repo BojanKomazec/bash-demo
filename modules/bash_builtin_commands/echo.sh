@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 echo_quoted_string() {
     echo "echo_quoted_string"
     # Print quoted string

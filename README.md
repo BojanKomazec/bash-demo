@@ -117,8 +117,36 @@ wait
 
 ### echo
 
+`echo` by default adds a new line character.
+
+Redirecting to stderr (>&2) flushes output immediately. If we omit this, the return value will be "foo()". This is a consequence of buffering.
+```
+foo() {
+    echo "foo()" >&2
+    echo "This is a desired return value"
+}
+
+ret_val=$(foo)
+```
+
 Using echo to write the _message_ in a function which also needs to return _data_ comes with buffering traps if everything is redirected to stdout. Messages migth not come in the desired/expected order and the output value might not contain only desired data but also parts of messages. We can return value from a function in multiple ways (via global variable or via file) but the most clean solution comes from the idea that stdin should be used ONLY for data and stderr should be used for any communication with terminal user (prompts, messaging). Messages echo'ed to stderr get flushed immediately so their order is preserved and this also leaves stdin in a clean state, used for communicating pure data between functions. By default, Bash itself writes `read -p` prompts to stderr (https://unix.stackexchange.com/questions/380012/why-does-bash-interactive-shell-by-default-write-its-prompt-and-echoes-its-inter).
 
 From https://stackoverflow.com/questions/79359311/bash-function-call-leads-to-incorrect-reversed-text-output-order#comment139947978_79359398:
 
 > printing the menu to stderr is absolutely a good idea. Stderr is where prompts, logs, and every other human-interaction status or "diagnostic" element belongs; stdout is intended for proper output -- meaning, if you're redirecting your program's output to a file, the things you'd want in that file. Content meant for a human operator to read doesn't fit that description. Take a look at your shell -- bash or what-have-you -- and you'll see its prompts are likewise going to stderr; this is entirely fitting as they're diagnostic in nature, giving the operator status information that the shell is ready for another command to be typed.
+
+### printf
+
+`printf` does not add a new line by default.
+
+### read
+
+The `-e` option in the read command enables Readline support, which allows you to use features like:
+
+* Arrow key navigation (move left/right in the input, use up/down to browse history). We can use arrow keys to move the cursor within the input.
+* Emacs-style editing (e.g., Ctrl+A to go to the beginning of the line, Ctrl+E for the end).
+* Command history search (if properly configured with bind).
+
+Without `-e`, `read` treats input as plain text, meaning:
+* Arrow keys print `^[[A`, `^[[B`, `^[[C` or `^[[D` instead of navigating.
+* No command history or editing features.

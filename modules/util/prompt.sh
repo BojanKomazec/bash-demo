@@ -2,6 +2,7 @@
 
 source "./modules/util/log.sh"
 
+
 prompt_user_for_confirmation() {
     local message="$1"
     local default_answer="$2"
@@ -9,7 +10,7 @@ prompt_user_for_confirmation() {
 
     while true;
     do
-        read -r -p "$message (y/n) [default: $default_answer]: " answer
+        read -e -r -p "$message (y/n) [default: $default_answer]: " answer
         case $answer in
             [Yy] ) 
                 confirmed=true
@@ -52,9 +53,10 @@ prompt_user_for_value() {
     fi
 
     while true; do
-        read -r -p "$message" value
+        read -e -r -p "$message" value
         if [[ -z "$value" ]]; then
             if [[ -n "$default_value" ]]; then
+            
                 value="$default_value"
                 log_info "Using default value: $value"
                 break

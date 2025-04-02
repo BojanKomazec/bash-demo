@@ -63,3 +63,48 @@ array_demo2() {
     printf "%s\t%s\n" "$i" "${names2[$i]}"
     done
 }
+
+associative_array_demo() {
+    log_info "Associative array demo"
+
+    # Declare an associative array
+    declare -A my_assoc_array
+
+    # Initialize an associative array
+    my_assoc_array=(
+        [name]="John"
+        [age]=30
+        [city]="New York"
+    )
+
+    # Add an element
+    my_assoc_array[country]="USA"
+
+    # Access an element
+    echo "Name: ${my_assoc_array[name]}"
+    echo "Country: ${my_assoc_array[country]}"
+    echo "City: ${my_assoc_array[city]}"
+    echo "Age: ${my_assoc_array[age]}"
+
+    # Update an element
+    echo && echo "Updating an element:"
+    my_assoc_array[age]=32
+    echo "Age: ${my_assoc_array[age]}"
+
+    echo && echo "Iterate over the associative array:"
+    # Print the entire associative array
+    for key in "${!my_assoc_array[@]}"; do
+        echo "$key: ${my_assoc_array[$key]}"
+    done
+
+    # Print the length of the associative array
+    echo && echo "Associative array length: ${#my_assoc_array[@]}"
+}
+
+data_structures_demo() {
+    log_info "Data structures demo"
+
+    # array_demo
+    # array_demo2
+    associative_array_demo
+}

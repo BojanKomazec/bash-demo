@@ -29,6 +29,8 @@ log_debug() {
     fi
 }
 
+# Sometimes we need to use echo instead of printf, e.g. when we want to pipe the output to another command:
+# echo "$response" | jq .
 log_info() {
     if [[ "$VERBOSE" == true ]]; then
         # two spaces before the message are required as the emoji takes up two characters
@@ -76,4 +78,20 @@ log_skip() {
 
 log_finish() {
     printf "%b\n" "🏁 $1" >&2;
+}
+
+log_prompt() {
+    printf "%b\n" "❓ $1" >&2;
+}
+
+log_empty_line() {
+    printf "\n" >&2;
+}
+
+log_directory() {
+    printf "%b\n" "📂 $1" >&2;
+}
+
+log_file() {
+    printf "%b\n" "📄 $1" >&2;
 }

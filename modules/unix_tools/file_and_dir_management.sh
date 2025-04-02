@@ -132,6 +132,13 @@ dirname_demo() {
     # Print the directory name of a path
     echo "dirname /usr/bin/ls: $(dirname /usr/bin/ls)"
 
-    CURRENT_DIR=$(dirname "$0") # get the directory where the script is located (but not the full path)
+    # get the directory where the script is located (but not the full path)
+    CURRENT_DIR=$(dirname "$0")
     echo "📂 Current directory: $CURRENT_DIR"
+
+    
+
+    # Get the directory where the script is located
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    log_info "📂 Script directory (full path): $SCRIPT_DIR"
 }

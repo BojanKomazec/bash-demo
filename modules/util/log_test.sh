@@ -15,6 +15,7 @@ log_test() {
     log_start "This is a start message"
     log_skip "This is a skip message"
     log_finish "This is a finish message"
+    log_prompt "Please select an option:"
 
 
     local name="Anne"

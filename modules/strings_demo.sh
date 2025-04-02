@@ -15,6 +15,31 @@ string_types_demo() {
     local string_with_variable_and_escape_quoted="Hello, \"$USER\"!"
 }
 
+streams_demo() {
+    echo
+    echo 'streams_demo()'
+    echo
+
+    # Print string to stdout
+    echo "Hello, World!"
+
+    # Print string to stderr
+    
+    echo "Hello, World!" >&2
+
+    # Print string to file
+    echo "Hello, World!" > hello.txt
+
+    # Print string to file and append
+    echo "Hello, World!" >> hello.txt
+
+    # Print string to file and overwrite
+    echo "Hello, World!" > hello.txt
+
+    # Print string to file and append with timestamp
+    echo "$(date) Hello, World!" >> hello.txt
+}
+
 substring_removal_demo() {
     echo
     echo 'substring_removal_demo()'

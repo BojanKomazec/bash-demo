@@ -56,3 +56,10 @@ test_prompt_user_for_value_with_default_value() {
         log_info "User provided a value: $value"
     fi
 }
+
+prompt_demo() {
+    log_info "\nprompt_demo()"
+    test_confirmation_prompt
+    test_prompt_user_for_value_without_default_value
+    test_prompt_user_for_value_with_default_value
+}
