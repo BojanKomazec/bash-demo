@@ -15,45 +15,46 @@
 # 5. Error
 # 6. Fatal
 
+# Apart from icons, it's good to have names of log levels in the log messages. This is helpful for filtering logs in log management systems.
+# For example, in Kibana, you can filter logs by the message field. If you have a log message like "INFO: This is an info message", you can filter it with "message:INFO".
+# This is useful for debugging and troubleshooting.
+#
+# two spaces before the message are required as the emoji takes up two characters
+#
+# Sometimes we need to use echo instead of printf, e.g. when we want to pipe the output to another command:
+# echo "$response" | jq .
 log_trace() {
     if [[ "$VERBOSE" == true ]]; then
-        # two spaces before the message are required as the emoji takes up two characters
-        printf "%b\n" "🔍 $1" >&2;
+        printf "%b\n" "🔍 TRACE: $1" >&2;
     fi
 }
 
 log_debug() {
     if [[ "$VERBOSE" == true ]]; then
-        # two spaces before the message are required as the emoji takes up two characters
-        printf "%b\n" "🐛 $1" >&2;
+        printf "%b\n" "🐛 DEBUG: $1" >&2;
     fi
 }
 
-# Sometimes we need to use echo instead of printf, e.g. when we want to pipe the output to another command:
-# echo "$response" | jq .
 log_info() {
     if [[ "$VERBOSE" == true ]]; then
-        # two spaces before the message are required as the emoji takes up two characters
-        printf "%b\n" "ℹ️  $1" >&2;
+        printf "%b\n" "ℹ️  INFO: $1" >&2;
     fi
 }
 
 log_error() {
-    printf "%b\n" "❌ $1" >&2;
+    printf "%b\n" "❌ ERROR: $1" >&2;
 }
 
 log_error_and_exit() {
-    printf "%b\n" "❌ $1" >&2; exit 1;
+    printf "%b\n" "❌ ERROR: $1" >&2; exit 1;
 }
 
 log_warning() {
-    # two spaces before the message are required as the emoji takes up two characters
-    printf "%b\n" "⚠️  $1" >&2;
+    printf "%b\n" "⚠️  WARNING: $1" >&2;
 }
 
 log_fatal() {
-    # two spaces before the message are required as the emoji takes up two characters
-    printf "%b\n" "💀 $1" >&2;
+    printf "%b\n" "💀 FATAL: $1" >&2;
 }
 
 #
