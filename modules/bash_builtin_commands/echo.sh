@@ -88,6 +88,14 @@ read_function_return_value() {
     echo "Message: $message"
 }
 
+# echo -e enables interpretation of escape sequences like \n
+echo_interpret_escape_sequences() {
+    echo "echo_interpret_escape_sequences"
+    # Print message with escape sequences
+    local name="$1"
+    echo -e "Hello, $name!\nThis is a new line."
+}
+
 echo_demo() {
     echo_quoted_string
     echo_unquoted_string

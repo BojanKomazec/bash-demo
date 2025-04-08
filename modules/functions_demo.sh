@@ -6,10 +6,13 @@ function_returns_string_via_echo() {
     # WARNING:
     # The following is a consequence of buffering in the shell - when this function
     # is called as $(function arg1 arg2).
-    #
+    # 
     # If this echo sends output to stdout, it will be captured by the caller.
     # If this echo sends output to stderr, it will not be captured by the caller.
     # That's why we use `>&2` to send output to stderr.
+    #
+    # Redirect the output to stderr to enforce flush as otherwise
+    # this string will also be returned by the function
     echo "function_returns_string_via_echo" >&2
 
     # Print message and variable

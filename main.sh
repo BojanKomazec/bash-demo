@@ -8,8 +8,10 @@
 # set +x
 
 # include other bash scripts
+source ./modules/bash_builtin_commands/declare.sh
 source ./modules/bash_builtin_commands/echo.sh
 source ./modules/bash_builtin_commands/mapfile.sh
+source ./modules/bash_builtin_commands/printf.sh
 source ./modules/bash_builtin_commands/read.sh
 source ./modules/data_structures.sh
 source ./modules/conditional_statements.sh
@@ -29,8 +31,26 @@ source ./modules/util/prompt_test.sh
 source ./modules/util/log_test.sh
 
 
+# Function to display usage/help
 print_usage() {
-    echo "Usage: $0 [--verbose] [--help]"
+  echo "Usage: $0 -u <username> -p <password> [--help] [--verbose]"
+  echo "       $0 --user <username> --password <password> [--help] [--verbose]"
+  echo "Options:"
+  echo "  -u, --user      Specify the username (requires a value)"
+  echo "  -p, --password  Specify the password (requires a value)"
+  echo "  -h, --help      Display this help message"
+  echo "  -v, --verbose   Enable verbose mode"
+}
+
+# Function to validate option value
+# Note that this function does not allow user or password to be empty or to start with a dash (-) or double dash (--).
+validate_argument_value() {
+    local value="$1"
+    if [[ -z "$value" || "$value" == --* || "$value" == -* ]]; then
+        echo "Error: Option '$2' requires a non-empty value which does not start with a dash (-) or double dash (--)."
+        print_usage
+        exit 1
+    fi
 }
 
 main() {
@@ -64,13 +84,25 @@ main() {
     # # Prepare terminal for raw input
     # stty raw -echo
 
-
+    # Initialize variables
+    USERNAME=""
+    PASSWORD=""
     VERBOSE=false
     # ENV=""
     # BRANCH=""
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            -u|--user)
+                validate_argument_value "$2" "$1"
+                USERNAME="$2"
+                shift 2
+                ;;
+            -p|--password)
+                validate_argument_value "$2" "$1"
+                PASSWORD="$2"
+                shift 2
+                ;;
             --verbose)
                 VERBOSE=true
                 shift # Move to the next argument
@@ -85,7 +117,10 @@ main() {
             #     ;;
             *)
                 # BRANCH="$1"
-                shift # Move to the next argument
+                echo "Unknown option: $1"
+                print_usage
+                exit 1
+                # shift
                 ;;
         esac
     done
@@ -98,6 +133,25 @@ main() {
 #         exit 1
 #     fi
 
+
+    # Verify required options are provided
+    if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
+        echo "Error: Both username (--user/-u) and password (--password/-p) are required."
+        print_usage2
+        exit 1
+    fi
+
+    # Display parsed values (if verbose mode is enabled)
+    if [[ $VERBOSE -eq 1 ]]; then
+        echo "Verbose mode enabled."
+    fi
+
+    echo "Username: $USERNAME"
+    echo "Password: $PASSWORD"
+    echo "Verbose: $VERBOSE"
+
+    exit 0
+
     # double quotes are required for variable expansion
 
     log_start "Running the demo script"
@@ -105,10 +159,10 @@ main() {
     # log_info "Branch: $BRANCH"
     log_info "Verbose: $VERBOSE"
 
-
     # cmp_demo
     # data_structures_demo
     # dirname_demo
+    # declare_demo
     # echo_demo
     # file_and_dir_management_tools_demo
     # file_io_demo
@@ -123,8 +177,9 @@ main() {
     # substring_removal_demo
     # shell_built_in_commands_demo
     # test_demo
-    prompt_demo
-    read_demo
+    printf_demo
+    # prompt_demo
+    # read_demo
     # working_dir_demo
 
     log_finish "Finished running the demo script"

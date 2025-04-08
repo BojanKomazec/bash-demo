@@ -4,6 +4,7 @@ source "./modules/util/log.sh"
 source "./modules/util/prompt.sh"
 
 test_confirmation_prompt(){
+    log_info "test_confirmation_prompt()"
     local message="Do you want to proceed?"
     local default_answer="y"
     local confirmed
@@ -26,10 +27,21 @@ test_confirmation_prompt(){
     else
         log_info "User confirmed."
     fi
+
+    message="\nIs new line properly interpreted??"
+    default_answer="n"
+    confirmed=false
+    confirmed=$(prompt_user_for_confirmation "$message" "$default_answer")
+    
+    if [ "$confirmed" == true ]; then
+        log_info "User confirmed."
+    else
+        log_info "User did not confirm."
+    fi
 }
 
 test_prompt_user_for_value_without_default_value() {
-    log_info "\ntest_prompt_user_for_value_without_default_value()"
+    log_info "test_prompt_user_for_value_without_default_value()"
 
     local value_name="Test Value"
     local value
@@ -43,7 +55,7 @@ test_prompt_user_for_value_without_default_value() {
 }
 
 test_prompt_user_for_value_with_default_value() {
-    log_info "\ntest_prompt_user_for_value_with_default_value()"
+    log_info "test_prompt_user_for_value_with_default_value()"
 
     local value_name="Test Value"
     local default_value="Default Value"
@@ -58,7 +70,7 @@ test_prompt_user_for_value_with_default_value() {
 }
 
 prompt_demo() {
-    log_info "\nprompt_demo()"
+    log_info "prompt_demo()"
     test_confirmation_prompt
     test_prompt_user_for_value_without_default_value
     test_prompt_user_for_value_with_default_value

@@ -15,7 +15,13 @@ array_demo() {
     echo "Element at index 0: ${my_array[0]}"
 
     # Print the entire array
+    # The following will cause SC2145: Argument mixes string and array.
+    # Use * or @ to avoid this.
+    # See: https://www.shellcheck.net/wiki/SC2145
     echo "All elements: ${my_array[@]}"
+
+    # The following is a good practice to avoid SC2145:
+    echo "All elements:" "${my_array[*]}"
 
     # Print the length of the array
     echo "Array length: ${#my_array[@]}"
@@ -104,7 +110,7 @@ associative_array_demo() {
 data_structures_demo() {
     log_info "Data structures demo"
 
-    # array_demo
+    array_demo
     # array_demo2
-    associative_array_demo
+    # associative_array_demo
 }

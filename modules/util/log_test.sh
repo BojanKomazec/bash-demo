@@ -31,4 +31,14 @@ log_test() {
     # This is how to pass strings with escape characters to the log functions if they use %s.
     # The variable is expanded because the string is in double quotes.
     # log_info $'This is a message with a variable and escape: \n\t\t'"$name"$'\t.'
+
+    log_array_elements "false" "one" "two" "three"
+    log_array_elements "true" "one" "two" "three"
+
+    print_index=false
+    array_numbers=("one" "two" "three")
+    log_array_elements "$print_index" "${array_numbers[@]}"
+
+    print_index=true
+    log_array_elements "$print_index" "${array_numbers[@]}"
 }

@@ -3,6 +3,10 @@
 source "./modules/util/log.sh"
 
 
+# read -p sends prompt to stderr, so we need to redirect printf to stderr as well.
+# This follows the good practice of all user-facing messages being sent to stderr.
+# This is important for scripts that may be used in pipelines or redirected to files.
+# This way, the output of the script can be easily separated from user prompts.
 prompt_user_for_confirmation() {
     local message="$1"
     local default_answer="$2"
@@ -10,12 +14,13 @@ prompt_user_for_confirmation() {
 
     while true;
     do
-        read -e -r -p "$message (y/n) [default: $default_answer]: " answer
+        printf "%b (y/n) [default: %s]: " "$message" "$default_answer" >&2
+        read -e -r answer
         case $answer in
             [Yy] ) 
                 confirmed=true
                 break;;
-            [Nn]) 
+            [Nn] ) 
                 confirmed=false
                 break;;
             "" )
@@ -53,10 +58,10 @@ prompt_user_for_value() {
     fi
 
     while true; do
-        read -e -r -p "$message" value
+        printf "%b" "$message" >&2
+        read -e -r value
         if [[ -z "$value" ]]; then
             if [[ -n "$default_value" ]]; then
-            
                 value="$default_value"
                 log_info "Using default value: $value"
                 break

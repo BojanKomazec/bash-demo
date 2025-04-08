@@ -41,6 +41,27 @@ When a function in a shell script executes a command that returns a non-zero exi
 
 # Bash Tips and Tricks
 
+## Command substitution
+
+When we use `$(...)`, the command inside the parentheses is executed in a subshell.
+
+A subshell is a separate process, and any variables or changes made inside it do not affect the parent shell.
+
+If the a variable from the calling shell is not properly passed or accessible within the subshell, the command inside $(...) may not behave as expected.
+
+## Globbing
+
+Globbing is a string pattern matching like:
+
+```
+if [[ -z "$value" || "$value" == --* || "$value" == -* ]]; then
+```
+
+* `--*` means "any string that starts with two dashes (`--`)", like `--verbose`, `--help`, etc.
+* `-*` means "any string that starts with one dash (`-`) followed by anything", like `-u`, `-p`, etc
+
+Pattern matching like `--*` only works with double bracked test `[[ ... ]]` (not with single bracket test `[ ... ]`).
+
 ## Bash built-in commands
 
 There are several options to see the list of all Bash built-in commands:
@@ -115,6 +136,19 @@ unset
 wait
 ```
 
+### declare
+
+Declares the type of the variable explicitly.
+
+```
+declare -i my_var # integer
+declare -a my_var # indexed array
+declare -A my_var # associative array
+```
+
+In a function, `declare` makes the variable local (in the function).
+Without any name, it lists all variables
+
 ### echo
 
 `echo` by default adds a new line character.
@@ -135,9 +169,26 @@ From https://stackoverflow.com/questions/79359311/bash-function-call-leads-to-in
 
 > printing the menu to stderr is absolutely a good idea. Stderr is where prompts, logs, and every other human-interaction status or "diagnostic" element belongs; stdout is intended for proper output -- meaning, if you're redirecting your program's output to a file, the things you'd want in that file. Content meant for a human operator to read doesn't fit that description. Take a look at your shell -- bash or what-have-you -- and you'll see its prompts are likewise going to stderr; this is entirely fitting as they're diagnostic in nature, giving the operator status information that the shell is ready for another command to be typed.
 
+`echo -e` enables interpretation of escape sequences like `\n`.
+
 ### printf
 
 `printf` does not add a new line by default.
+
+`printf` interprets `\n` as a newline and formats the prompt string correctly.
+The backslash-escaped characters are interpreted when used in the format string or in an argument corresponding to a `%b` conversion specifier.
+
+
+Escape sequence will be interpreted correctly in these cases:
+```
+printf "Line1\nLine2"
+printf "%b" "Line1\nLine2"
+```
+
+Escape sequence will not be interpreted correctly (will be printed as is) in these cases:
+```
+printf "%s" "Line1\nLine2"
+```
 
 ### read
 
@@ -150,3 +201,5 @@ The `-e` option in the read command enables Readline support, which allows you t
 Without `-e`, `read` treats input as plain text, meaning:
 * Arrow keys print `^[[A`, `^[[B`, `^[[C` or `^[[D` instead of navigating.
 * No command history or editing features.
+
+`read` does not interpret escape sequences in prompt message. The workaround is to print the message as `echo -e` or `printf` before the `read`.
