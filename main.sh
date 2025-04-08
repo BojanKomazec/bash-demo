@@ -30,6 +30,9 @@ source ./modules/util/prompt.sh
 source ./modules/util/prompt_test.sh
 source ./modules/util/log_test.sh
 
+print_bash_version() {
+    echo "Bash version: $BASH_VERSION"
+}
 
 # Function to display usage/help
 print_usage() {
@@ -53,8 +56,18 @@ validate_argument_value() {
     fi
 }
 
+validate_mandatory_argument() {
+    local value="$1"
+    if [[ -z "$value" ]]; then
+        echo "Error: Option '$2' requires a non-empty value."
+        print_usage
+        exit 1
+    fi
+}
+
 main() {
-    echo "Bash version: $BASH_VERSION"
+    log_start "Running the demo script"
+    print_bash_version
 
     #  by default, bash doesn't always enable special key processing depending on how the script is being run
     # Up = ^[[A
@@ -125,38 +138,15 @@ main() {
         esac
     done
 
-    # Validate mandatory arguments
-#     if [[ -z "$ENV" || -z "$BRANCH" ]]; then
-#         echo "Usage: $0 [--verbose] <environment> <branch>
-# Environment: test, prod
-# Branch: The branch on which the workflows will be run."
-#         exit 1
-#     fi
+    validate_mandatory_argument "$USERNAME" "--user"
+    validate_mandatory_argument "$PASSWORD" "--password"
 
-
-    # Verify required options are provided
-    if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
-        echo "Error: Both username (--user/-u) and password (--password/-p) are required."
-        print_usage2
-        exit 1
-    fi
-
-    # Display parsed values (if verbose mode is enabled)
     if [[ $VERBOSE -eq 1 ]]; then
-        echo "Verbose mode enabled."
+        log_info "Verbose mode enabled."
     fi
 
-    echo "Username: $USERNAME"
-    echo "Password: $PASSWORD"
-    echo "Verbose: $VERBOSE"
-
-    exit 0
-
-    # double quotes are required for variable expansion
-
-    log_start "Running the demo script"
-    # log_info "Environment: $ENV"
-    # log_info "Branch: $BRANCH"
+    log_info "Username: $USERNAME"
+    log_info "Password: $PASSWORD"
     log_info "Verbose: $VERBOSE"
 
     # cmp_demo

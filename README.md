@@ -41,6 +41,21 @@ When a function in a shell script executes a command that returns a non-zero exi
 
 # Bash Tips and Tricks
 
+## Variable expansion
+
+Double quotes are crucial for variable expansion because they allow the shell to interpret and substitute the values of variables within a string, while single quotes treat everything literally.
+
+Double quotes enable the shell to look for and replace variable placeholders (like `$variable`) with their actual values.
+Single quotes, on the other hand, treat everything inside them as a literal string, meaning variables are not expanded, and special characters retain their literal meaning.
+
+`echo "Hello, $USER"` will output `"Hello, your_username"` (assuming your username is `your_username`) because the shell expands `$USER`.
+`echo 'Hello, $USER'` will output `"Hello, $USER"` because the shell treats `$USER` literally.
+
+It's generally good practice to always double-quote variables when using them in commands or scripts to avoid potential issues with word splitting and ensure the correct interpretation of the variable's value.
+
+`ls -l $PATH` might list files in each directory in `$PATH` if `$PATH` contains spaces, rather than listing the directory itself.
+`ls -l "$PATH"` will list the files in the directory `$PATH` as a single argument, regardless of spaces.
+
 ## Command substitution
 
 When we use `$(...)`, the command inside the parentheses is executed in a subshell.
