@@ -41,6 +41,8 @@ When a function in a shell script executes a command that returns a non-zero exi
 
 # Bash Tips and Tricks
 
+* [Variables](#variables)
+* [Special variables](#special_variables)
 * [Variable expansion](#variable_expansion)
 * [Parameter expansion expression](#parameter_expansion_expression)
 * [Loading variables from .env file](#loading-variables-from-env-file)
@@ -53,8 +55,120 @@ When a function in a shell script executes a command that returns a non-zero exi
     * [read](#read)
     * [set](#set)
     * [shift](#shift)
+    * [test](#test)
+* [Unix Tools](#unix-tools-unix-core-utilities)
+    * [head](#head)
+* [Misc](#misc)
+
+<a id="variables"></a>
+## Variables
+
+Avoid using these namnes for variables as these are the names of special environment variables in Bash and Unix-like systems. These variables are critical for the functioning of the shell and the system, and overwriting them without care can lead to unexpected behavior.
+
+```
+BASH_VERSION
+CDPATH
+COLUMNS
+DISPLAY
+EDITOR
+ENV
+ERREXIT
+HISTCONTROL
+HISTFILE
+HISTFILESIZE
+HISTIGNORE
+HISTSIZE
+HOME
+HOSTNAME
+IFS
+LANG
+LC_ALL
+LC_COLLATE
+LC_CTYPE
+LC_MESSAGES
+LC_MONETARY
+LC_NUMERIC
+LC_TIME
+LINES
+LOGNAME
+MACHTYPE
+MAIL
+MAILCHECK
+MANPATH
+OLDPWD
+OSTYPE
+PAGER
+PATH
+PATH_SEPARATOR
+PROMPT_COMMAND
+PROMPT_DIRTRIM
+PS1
+PS2
+PWD
+RANDOM
+SECURE_PATH
+SHELL
+SHLVL
+TERM
+TMPDIR
+UID
+USER
+VISUAL
+XDG_CACHE_HOME
+XDG_CONFIG_HOME
+XDG_DATA_HOME
+```
+
+Example of the Problem
+
+Overwriting `PATH`:
+
+```
+#!/usr/bin/env bash
+
+# Overwrite PATH
+PATH="/some/custom/path"
+
+# Try running a command
+echo "This will fail: $(which curl)"
+```
+
+Output:
+
+```
+which: command not found
+```
+
+The shell cannot find the `which` command because `bin` (or other standard directories) is no longer in `PATH`.
+
+### Best Practices:
+
+1. Use a Different Variable Name
+Instead of naming your variable `PATH`, use a more descriptive name that avoids conflicts with the system variable. For example:
+```
+local api_path="/${API_VERSON}/${ENDPOINT}"
+```
+
+2. Always Preserve the Original `PATH`
+If you must modify `PATH` temporarily, ensure you restore it afterward:
+```
+original_path="$PATH"
+PATH="/some/custom/path:$PATH"
+
+# Run commands here
+
+PATH="$original_path" # Restore the original PATH
+```
+
+3. Debugging Tip
+If you suspect `PATH` has been overwritten, you can print its value to debug:
+```
+echo "PATH: $PATH"
+```
 
 
+
+<a id="special_variables"></a>
 ## Special variables
 
 "$@"
@@ -147,7 +261,7 @@ arg 2
 arg3
 ```
 
-`$#` represents the total number of arguments passed to the script
+`$#` represents the total number of arguments passed to the script.
 
 <a id="variable_expansion"></a>
 ## Variable expansion
@@ -279,6 +393,13 @@ Pattern matching like `--*` only works with double bracked test `[[ ... ]]` (not
 
 ## Bash built-in commands
 
+Bash Built-ins:
+
+Commands that are built into the Bash shell itself.
+Executed directly by the shell without invoking an external program.
+Examples: echo, read, set, shift, test, declare.
+
+
 There are several options to see the list of all Bash built-in commands:
 * `man builtins`
 * `man bash`
@@ -351,6 +472,36 @@ unset
 wait
 ```
 
+#### How to Check if a Command Is a Built-in or Unix Tool
+
+1) Using type:
+
+Run type head to check if head is a built-in or an external command.
+
+```
+type head
+head is /usr/bin/head
+```
+
+2) Using which:
+
+Run which head to find the location of the head command.
+
+```
+which head
+/usr/bin/head
+```
+
+3) Using help:
+
+Built-in commands can be checked with help. If help head returns an error, it is not a built-in.
+
+
+```
+help head
+bash: help: no help topics match 'head'. Try 'help help'.
+```
+
 ### declare
 
 Declares the type of the variable explicitly.
@@ -362,7 +513,7 @@ declare -A my_var # associative array
 ```
 
 In a function, `declare` makes the variable local (in the function).
-Without any name, it lists all variables
+Without any name, it lists all variables.
 
 ### echo
 
@@ -520,6 +671,43 @@ This is a conditional expression in Bash. The [[ ... ]] construct is used for ad
 -z:
 
 The -z operator checks if the length of a string is zero. It returns true if the string is empty or unset.
+
+## Unix Tools (Unix Core Utilities)
+
+Unix Tools:
+
+* External programs or utilities provided by the operating system.
+* Found in directories like bin, bin, or bin.
+* Examples: head, tail, grep, awk, sed.
+
+### head
+
+
+The head command is a Unix tool, not a Bash built-in command. It is part of the core utilities provided by the operating system, typically found in packages like GNU Coreutils on Linux systems or BSD Core Utilities on macOS.
+
+`head -n 5` would display the first 5 lines of input.
+
+On MacOS the command above gives:
+```
+head: illegal line count -- -1
+```
+
+On macOS, `head -n -1` is not supported. To exclude the last line of input, you can use `sed '$d'` or `awk 'NR < NR-1'`. For example:
+
+```
+echo "$response" | awk 'NR==1{print; exit}'
+```
+
+### tail
+
+The tail command is typically used to display the last few lines of a file or input. By default, it shows the last 10 lines unless otherwise specified.
+
+tail -n 1 command in Bash is used to display the last line of input. The -n option allows you to specify the number of lines to display. In this case, -n 1 tells tail to display only the last line of the input. This is particularly useful when you need to extract a specific piece of information from the end of a file or stream.
+
+
+Monitoring Logs:
+
+While tail is often used with the -f option to follow logs in real-time, tail -n 1 can be used to quickly check the most recent log entry.
 
 ## Misc
 

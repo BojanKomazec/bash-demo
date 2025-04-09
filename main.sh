@@ -23,6 +23,7 @@ source ./modules/filesystem_demo.sh
 source ./modules/strings_demo.sh
 source ./modules/unix_tools/file_and_dir_management.sh
 source ./modules/unix_tools/file_comparison.sh
+source ./modules/unix_tools/networking.sh
 source ./modules/unix_tools/test_demo.sh
 source ./modules/unix_tools/text_processing.sh
 source ./modules/util/log.sh
@@ -92,6 +93,10 @@ print_script_info() {
     log_debug "Current script BASH_ARGV: ${BASH_ARGV[*]}"
     log_debug "Current script BASH_COMMAND: $BASH_COMMAND"
     log_debug "Current script BASH_ENV: $BASH_ENV"
+    log_debug "Current script ENV: $ENV"
+    log_debug "Current script PATH: $PATH"
+    log_debug " Current script SHELL: $SHELL"
+    which curl
 }
 
 # By default, bash doesn't always enable special key processing depending on how the script is being run
@@ -155,7 +160,6 @@ main() {
         fi
     done
 
-    print_bash_version
     print_script_info "$@"
 
     if [[ -n "$ENV_FILE" ]]; then
@@ -239,13 +243,14 @@ main() {
     # log_test
     # ln_demo
     # mapfile_demo
+    networking_demo
     # operators_demo
     # string_checks_demo
     # string_demo
     # substring_removal_demo
     # shell_built_in_commands_demo
     # test_demo
-    printf_demo
+    # printf_demo
     # prompt_demo
     # read_demo
     # working_dir_demo
